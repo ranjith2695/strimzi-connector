@@ -1,4 +1,4 @@
-Creating a PostgreSQL DB using kubectl 
+Creating a PostgreSQL DB using kubectl
 
 kubectl apply -f postgres-config.yaml 
 
