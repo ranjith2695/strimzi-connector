@@ -1,0 +1,20 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: jdbc-source-connector
+  namespace: strimzi
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: io.confluent.connect.jdbc.JdbcSourceConnector
+  tasksMax: 1
+  config:
+    connection.url: jdbc:postgresql://postgres:5432/demo
+    connection.user: test
+    connection.password: test1234
+    table.whitelist: mytopic
+    mode: incrementing
+    incrementing.column.name: id
+    topic.prefix: mytopic-
+    poll.interval.ms: 1000
+

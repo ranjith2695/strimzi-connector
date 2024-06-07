@@ -1,0 +1,18 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: my-sink-connector
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: "io.confluent.connect.jdbc.JdbcSinkConnector"
+  tasksMax: 1
+  config:
+    connection.url: jdbc:mysql://mysql:3306/demo?user=ranjith&password=test1234
+    topics: "mytopic-mytopic"
+    insert.mode: upsert
+    pk.mode: record_value
+    pk.fields: "id"
+    delete.enabled: "false"
+    auto.create: "true"
+    auto.evolve: "true"

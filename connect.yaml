@@ -1,0 +1,32 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  replicas: 1
+  bootstrapServers: my-cluster-kafka-bootstrap.strimzi.svc:9092
+  config:
+    group.id: my-connect-cluster
+    offset.storage.topic: my-connect-cluster-offsets
+    config.storage.topic: my-connect-cluster-configs
+    status.storage.topic: my-connect-cluster-status
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: true
+    value.converter.schemas.enable: true
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+  build:
+    output:
+      type: docker
+      image: ranjuranjith/kafka-connect:latest
+      pushSecret: regcred
+    plugins:
+      - name: kafka-connect-jdbc
+        artifacts:
+          - type: zip
+            url: https://raw.githubusercontent.com/confluentinc/confluent-kubernetes-examples/master/hybrid/ccloud-JDBC-mysql/confluentinc-kafka-connect-jdbc-10.2.5.zip
+            sha512sum: 9d033fabac89ec0b35a97246f7ca3a36800bcb402ccfbd76adebd4c4c9ca6e7d6a044a9162383a18f99400893581b55a87b9fe89e35276507e9a3fb6cff3fda0
